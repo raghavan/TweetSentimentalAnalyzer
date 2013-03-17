@@ -1,0 +1,1 @@
+A tweet data sentimental analyze this to classify the polarity of the tweets. The data is modelled based on the tweets collected during the 2012 US Presidential election, this engine tries to predict if the tweet supports Obama or Romney. This algorithm can be potentially extended for any opinion mining tasks. 
