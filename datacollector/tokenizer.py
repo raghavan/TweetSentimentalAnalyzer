@@ -22,11 +22,11 @@ for tweet in tweets:
 
    #print(words);
    if 'obama' in words or 'barrack' in words or 'barackobama' in words:
-       obama.append(tweet);
+       obama.append(cleanedTweet);
    elif 'mitt' in words or 'romney' in words or 'mittromney' in words :
-       romney.append(tweet);
+       romney.append(cleanedTweet);
    else:
-       unknown.append(tweet);
+       unknown.append(cleanedTweet);
 
 writeToFile(obama,'obama.txt');
 writeToFile(romney,'romney.txt');
