@@ -5,13 +5,13 @@ public class ArffData {
 	private double unigramProbability;
 	private double emoticonProbability;
 	private int classLabel;
+    private int polarity;
 
-	// private float polarityRatio;
-
-	public ArffData(double unigramProbability, double emoticonProbability, int classLabel) {
+	public ArffData(double unigramProbability, double emoticonProbability,int polarity, int classLabel) {
 		super();
 		this.unigramProbability = unigramProbability;
 		this.emoticonProbability = emoticonProbability;
+		this.polarity = polarity;
 		this.classLabel = classLabel;
 	}
 
@@ -34,14 +34,24 @@ public class ArffData {
 		this.classLabel = classLabel;
 	}
 	
+	public int getPolarity() {
+		return polarity;
+	}
+
+	public void setPolarity(int polarity) {
+		this.polarity = polarity;
+	}
+
 	public String getArffStructuredData() {
-		return roundOffTwoDecimals(unigramProbability)+","+roundOffTwoDecimals(emoticonProbability)+","+classLabel;
+		return roundOffTwoDecimals(unigramProbability)+","+roundOffTwoDecimals(emoticonProbability)+
+				","+polarity+","+classLabel;
 	}
 	
 	private double roundOffTwoDecimals(double value){
 		double val = Math.round( value * 100.0 ) / 100.0;
 		return val;
 	}
+	
 
 	@Override
 	public String toString() {

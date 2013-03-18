@@ -67,5 +67,9 @@ public class Tweet {
 		
 		return ClassLabel.UNKNOWN.value;
 	}
+	
+	public int getPolarityOfTheTweet(){
+		return Utility.getPolarityOfTheString(getCleanedTweet());
+	}
 
 }

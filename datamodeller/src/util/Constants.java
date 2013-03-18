@@ -18,6 +18,7 @@ public interface Constants {
 		String ROMNEY = "romney";
 		String OBAMA = "obama";
 		String ARFF_TRAINED_FILE = "files/trainedmodel.arff";
+		String POLARITY_WORD_FILE = "files/wordpolarity.properties";
 		
 		
 }

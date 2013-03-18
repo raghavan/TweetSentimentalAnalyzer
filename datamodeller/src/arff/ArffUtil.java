@@ -19,6 +19,7 @@ public class ArffUtil {
 		List<String> attributes = new ArrayList<String>();
 		attributes.add("@ATTRIBUTE unigram  NUMERIC");
 		attributes.add("@ATTRIBUTE emoticon  NUMERIC");
+		attributes.add("@ATTRIBUTE polarity  NUMERIC");
 		attributes.add("@ATTRIBUTE class  {-1,0,1,2}");
 		return attributes;
 	}

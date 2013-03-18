@@ -45,7 +45,8 @@ public class ArrfGenerator {
 					emoticonProbability += getProbability(numerator, emoticonDemominator);
 				}
 			}
-			ArffData arffData = new ArffData(unigramProbability, emoticonProbability, tweet.getClassLabel());
+			ArffData arffData = new ArffData(unigramProbability, emoticonProbability,tweet.getPolarityOfTheTweet(),
+					tweet.getClassLabel());
 			System.out.println(arffData);
 			arffRecords.add(arffData);
 		}
