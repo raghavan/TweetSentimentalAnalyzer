@@ -1,4 +1,4 @@
-import csv
+import re
 
 
 def writeToFile(list,filename):
@@ -10,13 +10,20 @@ tweets = open("tweets.csv", "r");
 obama = []
 romney= []
 unknown = []
-for tweet in tweets:   
-   tweetInLowerCase = tweet.lower();
+for tweet in tweets: 
+   cleanedTweet = re.sub(r"<(.*?)>", " ",tweet);
+
+   for ch in ['&','#','?',':','@','\'','!','-',',','/',';','(',')','\\','"','.','=']: 
+      if ch in cleanedTweet:
+         cleanedTweet=cleanedTweet.replace(ch," ")
+
+   tweetInLowerCase = cleanedTweet.lower() 
    words = tweetInLowerCase.split(' ');
-   print(words);
-   if 'obama' in words or 'barrack' in words:
+
+   #print(words);
+   if 'obama' in words or 'barrack' in words or 'barackobama' in words:
        obama.append(tweet);
-   elif 'mitt' in words or 'romney' in words:
+   elif 'mitt' in words or 'romney' in words or 'mittromney' in words :
        romney.append(tweet);
    else:
        unknown.append(tweet);
