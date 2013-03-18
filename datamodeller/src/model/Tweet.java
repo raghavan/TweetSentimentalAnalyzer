@@ -56,16 +56,16 @@ public class Tweet {
 		return Utility.cleanTweetMessage(tweetMessage);				
 	}
 	
-	public ClassLabel getClassLabel(){
+	public int getClassLabel(){
 		
 		if(finalConsensus.equals("-1"))
-			return ClassLabel.NEGATIVEONE;
+			return ClassLabel.NEGATIVEONE.value;
 		else if(finalConsensus.equals("1"))
-			return ClassLabel.ONE;
+			return ClassLabel.ONE.value;
 		else if(finalConsensus.equals("0"))
-			return ClassLabel.ZERO;
+			return ClassLabel.ZERO.value;
 		
-		return ClassLabel.UNKNOWN;
+		return ClassLabel.UNKNOWN.value;
 	}
 
 }

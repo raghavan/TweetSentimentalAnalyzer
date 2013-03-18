@@ -11,6 +11,10 @@ public class FileHandler implements IDataHandler {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void writeDataToFile(){
+		
+	}
 
 
 }
