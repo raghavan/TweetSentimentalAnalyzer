@@ -55,8 +55,7 @@ public class DBHandler implements IDataHandler {
 			try {
 				while (results.next()) {
 					Tweet tweet = new Tweet(results.getString("annotated_tweet"), results.getString("labelled_for"),
-							results.getString("final_class_consensus"), results.getInt("student1"),
-							results.getInt("student1"));
+							results.getString("final_class_consensus"), true);
 					tweets.add(tweet);
 				}
 			} catch (SQLException e) {

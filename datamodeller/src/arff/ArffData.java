@@ -1,26 +1,30 @@
 package arff;
 
+import java.util.List;
+import java.util.Map;
+
 public class ArffData {
 
-	private double unigramProbability;
+	private Map<String, Integer> wordCountOfTweet;
 	private double emoticonProbability;
+	private int polarity;
 	private int classLabel;
-    private int polarity;
 
-	public ArffData(double unigramProbability, double emoticonProbability,int polarity, int classLabel) {
-		super();
-		this.unigramProbability = unigramProbability;
+	public ArffData(Map<String, Integer> wordCountOfTweet, double emoticonProbability, int polarity, int classLabel) {
+
+		this.wordCountOfTweet = wordCountOfTweet;
 		this.emoticonProbability = emoticonProbability;
 		this.polarity = polarity;
 		this.classLabel = classLabel;
 	}
 
-	public double getUnigramProbability() {
-		return unigramProbability;
+	public Map<String, Integer> getWordCountOfTweet() {
+		return wordCountOfTweet;
 	}
-	public void setUnigramProbability(float unigramProbability) {
-		this.unigramProbability = unigramProbability;
+	public void setWordCountOfTweet(Map<String, Integer> wordCountOfTweet) {
+		this.wordCountOfTweet = wordCountOfTweet;
 	}
+
 	public double getEmoticonProbability() {
 		return emoticonProbability;
 	}
@@ -33,7 +37,7 @@ public class ArffData {
 	public void setClassLabel(int classLabel) {
 		this.classLabel = classLabel;
 	}
-	
+
 	public int getPolarity() {
 		return polarity;
 	}
@@ -42,21 +46,27 @@ public class ArffData {
 		this.polarity = polarity;
 	}
 
-	public String getArffStructuredData() {
-		return roundOffTwoDecimals(unigramProbability)+","+roundOffTwoDecimals(emoticonProbability)+
-				","+polarity+","+classLabel;
+	public String getArffStructuredData(List<String> uniqueWords) {
+		StringBuffer arrfStructure = new StringBuffer();
+		for (String str : uniqueWords) {
+			if (wordCountOfTweet.containsKey(str)) {
+				arrfStructure.append(wordCountOfTweet.get(str) + ",");
+			}else{
+				arrfStructure.append(0 + ",");
+			}				
+		}
+		arrfStructure.append(roundOffTwoDecimals(emoticonProbability) + ",");
+		arrfStructure.append(polarity + "," + classLabel);
+		return arrfStructure.toString();
 	}
-	
-	private double roundOffTwoDecimals(double value){
-		double val = Math.round( value * 100.0 ) / 100.0;
+	private double roundOffTwoDecimals(double value) {
+		double val = Math.round(value * 100.0) / 100.0;
 		return val;
 	}
-	
 
 	@Override
 	public String toString() {
-		return "ArffData [unigramProbability=" + unigramProbability + ", emoticonProbability=" + emoticonProbability
-				+ ", classLabel=" + classLabel + "]";
+		return "ArffData = [ emoticonProbability=" + emoticonProbability + ", classLabel=" + classLabel + "]";
 	}
 
 }

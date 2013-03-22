@@ -1,5 +1,9 @@
 package model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import util.Utility;
 
 public class Tweet {
@@ -7,17 +11,14 @@ public class Tweet {
 	private String tweetMessage;
 	private String labelledFor;
 	private String finalConsensus;
-	private Integer student1Consensus;
-	private Integer student2Consensus;
+	private boolean isFromDb;
 
-	public Tweet(String tweet, String labelledFor, String finalConsensus, Integer student1Consensus,
-			Integer student2Consensus) {
+	public Tweet(String tweet, String labelledFor, String finalConsensus, boolean isFromDb) {
 		super();
 		this.tweetMessage = tweet;
 		this.labelledFor = labelledFor;
 		this.finalConsensus = finalConsensus;
-		this.student1Consensus = student1Consensus;
-		this.student2Consensus = student2Consensus;
+		this.isFromDb = isFromDb;
 	}
 
 	public String getTweetMessage() {
@@ -40,36 +41,52 @@ public class Tweet {
 	public void setFinalConsensus(String finalConsensus) {
 		this.finalConsensus = finalConsensus;
 	}
-	public Integer getStudent1Consensus() {
-		return student1Consensus;
+
+	public boolean isFromDb() {
+		return isFromDb;
 	}
-	public void setStudent1Consensus(Integer student1Consensus) {
-		this.student1Consensus = student1Consensus;
+
+	public void setFromDb(boolean isFromDb) {
+		this.isFromDb = isFromDb;
 	}
-	public Integer getStudent2Consensus() {
-		return student2Consensus;
+
+	public String getCleanedTweet() {
+		if (isFromDb)
+			return Utility.cleanDbTweetMessage(tweetMessage);
+		else
+			return Utility.cleanFileTweetMessage(tweetMessage);
 	}
-	public void setStudent2Consensus(Integer student2Consensus) {
-		this.student2Consensus = student2Consensus;
-	}
-	public String getCleanedTweet(){
-		return Utility.cleanTweetMessage(tweetMessage);				
-	}
-	
-	public int getClassLabel(){
-		
-		if(finalConsensus.equals("-1"))
+
+	public int getClassLabel() {
+
+		if (finalConsensus.equals("-1"))
 			return ClassLabel.NEGATIVEONE.value;
-		else if(finalConsensus.equals("1"))
+		else if (finalConsensus.equals("1"))
 			return ClassLabel.ONE.value;
-		else if(finalConsensus.equals("0"))
+		else if (finalConsensus.equals("0"))
 			return ClassLabel.ZERO.value;
-		
+
 		return ClassLabel.UNKNOWN.value;
 	}
-	
-	public int getPolarityOfTheTweet(){
+
+	public int getPolarityOfTheTweet() {
 		return Utility.getPolarityOfTheString(getCleanedTweet());
+	}
+
+	public Map<String, Integer> getWordCountMap() {
+		Map<String, Integer> wordCount = new HashMap<String, Integer>();
+		List<String> stopWords = Utility.getAllStopWords();
+		for (String word : tweetMessage.split(" ")) {
+			if (!stopWords.contains(word)) {
+				int count = 0;
+				if (wordCount.containsKey(word)) {
+					count = wordCount.get(word);
+				}
+				count += 1;
+				wordCount.put(word, count);
+			}
+		}
+		return wordCount;
 	}
 
 }

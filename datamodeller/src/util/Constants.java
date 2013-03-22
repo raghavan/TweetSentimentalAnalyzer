@@ -1,7 +1,5 @@
 package util;
 
-import java.util.List;
-import java.util.Set;
 
 public interface Constants {
 		//DB props
@@ -19,6 +17,9 @@ public interface Constants {
 		String OBAMA = "obama";
 		String ARFF_TRAINED_FILE = "files/trainedmodel.arff";
 		String POLARITY_WORD_FILE = "files/wordpolarity.properties";
+		String OBAMA_FILE = "files/obama";
+		String STOP_WORDS_FILE = "files/stopwords";
+		Integer COUNT_THRESHOLD = 20;
 		
 		
 }
