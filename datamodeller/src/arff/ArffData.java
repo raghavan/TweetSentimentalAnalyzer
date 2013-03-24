@@ -55,7 +55,7 @@ public class ArffData {
 				arrfStructure.append(0 + ",");
 			}				
 		}
-		arrfStructure.append(roundOffTwoDecimals(emoticonProbability) + ",");
+		//arrfStructure.append(roundOffTwoDecimals(emoticonProbability) + ",");
 		arrfStructure.append(polarity + "," + classLabel);
 		return arrfStructure.toString();
 	}

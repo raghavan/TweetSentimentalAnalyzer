@@ -35,9 +35,7 @@ public class Tweet {
 	public void setLabelledFor(String labelledFor) {
 		this.labelledFor = labelledFor;
 	}
-	public String getFinalConsensus() {
-		return finalConsensus;
-	}
+	
 	public void setFinalConsensus(String finalConsensus) {
 		this.finalConsensus = finalConsensus;
 	}
@@ -87,6 +85,21 @@ public class Tweet {
 			}
 		}
 		return wordCount;
+	}
+
+	public int getFinalConsensusAsInteger() {
+		int consensus = 100;
+		try {
+			consensus = Integer.parseInt(finalConsensus);
+			if(consensus == 1 && labelledFor.equalsIgnoreCase("romney")){
+				consensus = -1;				
+			}else if(consensus == -1 && labelledFor.equalsIgnoreCase("romney")){
+				consensus = 1;				
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		return consensus;
 	}
 
 }

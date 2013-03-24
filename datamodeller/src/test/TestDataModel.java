@@ -51,7 +51,7 @@ public class TestDataModel {
 		IDataHandler dataHandler = new FileHandler();
 		List<Tweet> tweets = dataHandler.getAllTweets(Constants.OBAMA_FILE);
 		for(Tweet tweet : tweets){			
-			System.out.println(tweet.getFinalConsensus());
+			System.out.println(tweet.getFinalConsensusAsInteger());
 		}
 	}
 	

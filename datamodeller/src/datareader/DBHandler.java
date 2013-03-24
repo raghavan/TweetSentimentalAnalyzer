@@ -11,6 +11,7 @@ import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util;
 
 import util.Constants;
+import util.Utility;
 import model.Tweet;
 
 public class DBHandler implements IDataHandler {
@@ -50,11 +51,19 @@ public class DBHandler implements IDataHandler {
 
 	private List<Tweet> makeTweetFromResultSet(ResultSet results) {
 		List<Tweet> tweets = new ArrayList<Tweet>();
+		List<String> stopWords = Utility.getAllStopWords();
 		if (results != null) {
-
 			try {
 				while (results.next()) {
-					Tweet tweet = new Tweet(results.getString("annotated_tweet"), results.getString("labelled_for"),
+					StringBuffer newStr = new StringBuffer();
+					for (String word : results.getString("annotated_tweet").split(" ")) {
+						word = Utility.cleanWord(word);
+						if (!stopWords.contains(word)) {
+							newStr.append(word);
+							newStr.append(" ");
+						}
+					}
+					Tweet tweet = new Tweet(newStr.toString(), results.getString("labelled_for"),
 							results.getString("final_class_consensus"), true);
 					tweets.add(tweet);
 				}

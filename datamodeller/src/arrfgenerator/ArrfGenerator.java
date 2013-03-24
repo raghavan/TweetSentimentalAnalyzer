@@ -9,14 +9,17 @@ import util.Constants;
 import util.Utility;
 import arff.ArffData;
 import arff.ArffUtil;
-import datareader.FileHandler;
+import datareader.DBHandler;
 import datareader.IDataHandler;
 
 public class ArrfGenerator {
 
 	public static void main(String args[]) {
-		IDataHandler dataHandler = new FileHandler();
-		List<Tweet> tweets = dataHandler.getAllTweets(Constants.OBAMA_FILE);
+		IDataHandler dataHandler = new DBHandler();
+		List<Tweet> tweets = dataHandler.getAllTweets(Constants.OBAMA);
+		GooglePredictor googlePredictor = new GooglePredictor();
+		//googlePredictor.makePredictionFile(tweets);
+		
 		BagOfWordSpace bagOfWordsSpace = makeBagOfWordsSpace(tweets);
 		List<ArffData> arffRecords = makeArffRecords(tweets, bagOfWordsSpace);
 		List<String> uniqueWords = bagOfWordsSpace.getAllUniqueWords();

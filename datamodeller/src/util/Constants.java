@@ -10,7 +10,7 @@ public interface Constants {
 		
 			
 		//Query
-		String GET_RESULT_FOR_OBAMA = "select * from tweet where labelled_for = 'obama'";
+		String GET_RESULT_FOR_OBAMA = "select * from tweet";
 		String GET_RESULT_FOR_ROMNEY = "select * from tweet where labelled_for = 'romney'";
 		
 		String ROMNEY = "romney";
@@ -19,7 +19,12 @@ public interface Constants {
 		String POLARITY_WORD_FILE = "files/wordpolarity.properties";
 		String OBAMA_FILE = "files/obama";
 		String STOP_WORDS_FILE = "files/stopwords";
-		Integer COUNT_THRESHOLD = 20;
+		Integer COUNT_THRESHOLD = 25;
+		String GOOGLE_PREDICTION_FILE = "files/google_tweet_predictor.txt";
+		
+		//Symbols
+		String QUOTE = "\"";
+		String COMMA = ",";
 		
 		
 }

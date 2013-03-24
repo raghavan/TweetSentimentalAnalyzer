@@ -20,15 +20,7 @@ public class FileHandler implements IDataHandler {
 					StringBuffer newStr = new StringBuffer();
 					String[] words = messageAndConsenses[0].split(" ");
 					for (String word : words) {
-						word = word.trim();
-						word = word.replace("\'", "");
-						word = word.replace("{", "");
-						word = word.replace("}", "");
-						word = word.replace("%", "");
-						word = word.replace("\"", "");
-						word = word.replace(",", "");
-						word = word.replace("class", "class_word");
-						word = word.toLowerCase();
+						word = Utility.cleanWord(word); 
 						if (!stopWords.contains(word)) {							
 							newStr.append(word);
 							newStr.append(" ");
@@ -42,5 +34,7 @@ public class FileHandler implements IDataHandler {
 		}
 		return tweets;
 	}
+
+
 
 }

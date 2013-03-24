@@ -87,7 +87,7 @@ public class BagOfWordSpace {
 		List<String> keyList = new ArrayList<String>(keys);
 		List<String> stopWords = Utility.getAllStopWords();
 		keyList.removeAll(stopWords);
-		//keyList = keyList.subList(0, 1800);	
+		//keyList = keyList.subList(0, 500);	
 		return keyList;
 	}
 

@@ -1,9 +1,11 @@
 package util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
+import arff.ArffData;
 
 public class Utility {
 
@@ -34,7 +38,7 @@ public class Utility {
 	static Map<String, String> propContents = null;
 	private static Map<String, String> readpropFile(String fileName) {
 		if (propContents == null) {
-			propContents = new HashMap<String,String>();
+			propContents = new HashMap<String, String>();
 			Properties props = new Properties();
 			try {
 				props.load(new FileInputStream(fileName));
@@ -52,7 +56,7 @@ public class Utility {
 	}
 
 	public static int getPolarityOfTheString(String cleanedTweet) {
-		final int NEGATIVE=0,NEUTRAL=1,POSITIVE = 2;
+		final int NEGATIVE = 0, NEUTRAL = 1, POSITIVE = 2;
 		int positiveCount = 0, negativeCount = 0, neutralCount = 0;
 		Map<String, String> propContents = readpropFile(Constants.POLARITY_WORD_FILE);
 		for (String str : cleanedTweet.split(" ")) {
@@ -86,10 +90,10 @@ public class Utility {
 	}
 
 	public static String cleanFileTweetMessage(String tweetMessage) {
-		//String resultString = tweetMessage.replaceAll(".", " ");
+		// String resultString = tweetMessage.replaceAll(".", " ");
 		return tweetMessage;
 	}
-	
+
 	public static List<String> readFromFile(String fileName) {
 		FileInputStream fstream = null;
 		List<String> fileRecords = new ArrayList<String>();
@@ -119,7 +123,41 @@ public class Utility {
 	}
 
 	public static List<String> getAllStopWords() {
-		List<String> stopWords = readFromFile(Constants.STOP_WORDS_FILE);			
+		List<String> stopWords = readFromFile(Constants.STOP_WORDS_FILE);
 		return stopWords;
+	}
+
+	public static String cleanWord(String word) {
+		word = word.trim();
+		List<String> stopWords = getAllStopWords();
+		for (String stopWord : stopWords) {
+			word = word.replace(stopWord, "");
+		}
+		word = word.replace("class", "class_word");
+		word = word.toLowerCase();
+		return word;
+	}
+
+	public static void writeDataToFile(String fileName, List<String> content) {
+		FileWriter fstream = null;
+		BufferedWriter out = null;
+		try {
+			fstream = new FileWriter(fileName);
+			out = new BufferedWriter(fstream);
+			for (String str : content) {
+				out.write(str);
+				out.write("\n");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+				fstream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 }
