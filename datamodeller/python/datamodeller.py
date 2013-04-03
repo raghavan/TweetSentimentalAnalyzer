@@ -2,10 +2,12 @@
 import numpy
 import scipy
 import sys
-from sklearn import linear_model
+from sklearn import linear_model,svm,naive_bayes
 from scipy.io import arff
 import pylab as pl
-from sklearn.naive_bayes import MultinomialNB
+import pickle
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import precision_recall_fscore_support
 
 class DataModeller:
     
@@ -34,25 +36,44 @@ class DataModeller:
         #yTrain = numpy.ndarray(shape=train_data.shape[0],1);
         yTrain = train_data['class'];
         yTest = test_data['class'];
-                    
-        #print xTrain;        
-        #print xTest;
-        #print yTrain;        
-        #print yTest;
         
         #Logistic Regression classification
         logreg = linear_model.LogisticRegression();
         logreg.fit(xTrain,yTrain);
-        logreg.predict(xTest);
-        resultLR =  logreg.score(xTest,yTest);
+        yPred = logreg.predict(xTest);
+        print yPred;
+        print yTest;            
+        resultLR =  logreg.score(xTest,yTest);   
+        print "Log regression";             
+        print "Confusion matrix",confusion_matrix(yTest, yPred);        
+        print "Prec,recall,fscore ",precision_recall_fscore_support(yTest, yPred,average='weighted');
         print "Log Reg mean accuracy =" , resultLR;
         
+                
+            
+        outputFile = open("../files/classifiedtweets.csv", 'w+')
+        rows = len(yPred)
+        outputFile.write("Predicted,Actual\n");
+        for i in range(0,rows):
+            outputFile.write(str(yPred[i]) +","+ str(yTest[i])+"\n")
+        outputFile.close()
+        
         #MultinomialNB classification
-        mutlinb = MultinomialNB();
+        mutlinb = naive_bayes.MultinomialNB();
         mutlinb.fit(xTrain,yTrain);
-        mutlinb.predict(xTest);
+        yPred = mutlinb.predict(xTest);
         resultMNB =  mutlinb.score(xTest,yTest);
-        print "MultiNB mean accuracy =" , resultMNB;
+        print "MultiNB";     
+        print "Confusion matrix",confusion_matrix(yTest, yPred);        
+        print "Prec,recall,fscore ",precision_recall_fscore_support(yTest, yPred, average='macro') 
+        print "MNB mean accuracy =" , resultMNB;
+        
+        #SVM based classification
+        #svmclf = svm.SVC();
+        #svmclf.fit(xTrain,yTrain);
+        #svmclf.predict(xTest);
+        #resultSVM =  svmclf.score(xTest,yTest);
+        #print "SVM mean accuracy =" , resultSVM;
         
 if __name__ == '__main__':
     if len(sys.argv) < 2:
