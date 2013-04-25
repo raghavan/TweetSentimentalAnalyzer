@@ -17,7 +17,7 @@ public interface Constants {
 		String OBAMA = "obama";
 		String ARFF_TRAINED_FILE = "files/trainedmodel.arff";
 		String POLARITY_WORD_FILE = "files/wordpolarity.properties";
-		String OBAMA_FILE = "files/4Classes";
+		String OBAMA_FILE = "files/obamaRomneyEq";
 		String STOP_WORDS_FILE = "files/stopwords";
 		Integer COUNT_THRESHOLD = 25;
 		String GOOGLE_PREDICTION_FILE = "files/google_tweet_predictor.txt";

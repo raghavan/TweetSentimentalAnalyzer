@@ -9,6 +9,7 @@ import util.Constants;
 import util.Utility;
 import arff.ArffData;
 import arff.ArffUtil;
+import arrfgenerator.GooglePredictor;
 import datareader.DBHandler;
 import datareader.FileHandler;
 import datareader.IDataHandler;
