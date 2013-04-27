@@ -45,8 +45,8 @@ class DataModeller:
         
         #tf-idf transformation
         transformer = TfidfTransformer()
-        xTrain = transformer.fit_transform(xTrain)        
-        xTest = transformer.fit_transform(xTest)
+        #xTrain = transformer.fit_transform(xTrain)        
+        #xTest = transformer.fit_transform(xTest)
 
         print "Training dimension -> ",xTrain.shape
         print "Testing dimension ->  ",xTest.shape
