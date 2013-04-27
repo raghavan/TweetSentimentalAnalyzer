@@ -43,7 +43,7 @@ class test:
         print "Training dimension -> ",xTrain.shape
         print "Testing dimension ->  ",xTest.shape
 
-        test(naive_bayes.MultinomialNB(),xTrain,yTrain,xTest,yTest)
+        classify(naive_bayes.MultinomialNB(),xTrain,yTrain,xTest,yTest)
     
 
     
