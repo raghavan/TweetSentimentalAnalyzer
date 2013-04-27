@@ -9,15 +9,16 @@ from sklearn import cross_validation as cv
 from sklearn.decomposition import SparsePCA
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.neighbors import KNeighborsClassifier
+import os
 
 
 def printPrecRecall(scores):
-    print "Class Label        -1           0               1                2"
-    print "Precision ",scores[0] 
-    print "Recall    ",scores[1]
-    print "F-Score   ",scores[2]
-    print "Total Instances ",scores[3]    
-    print "\n"
+    appendDataTofile("Class Label        -1           0               1                2")
+    appendDataTofile("Precision ",scores[0]) 
+    appendDataTofile("Recall    ",scores[1])
+    appendDataTofile("F-Score   ",scores[2])
+    appendDataTofile("Total Instances ",scores[3])
+    appendDataTofile("\n")    
     
 def transform(xTrain,yTrain,xTest):
     pca = SparsePCA(n_components=200,n_jobs=10);
@@ -30,11 +31,19 @@ def classify(func,xTrain,xTest,yTrain,yTest):
         clf.fit(xTrain, yTrain);
         yPred = clf.predict(xTest); 
         resultLR =  clf.score(xTest,yTest);
-        print "accuracy =" , resultLR.mean();             
-        print "Confusion matrix",confusion_matrix(yTest, yPred);        
+        print  "",func,"accuracy =" , resultLR.mean();  
+        appendDataTofile("accuracy =" , resultLR.mean());           
+        print "Confusion matrix",confusion_matrix(yTest, yPred);   
+        appendDataTofile("Confusion matrix",confusion_matrix(yTest, yPred))             
         precScores = precision_recall_fscore_support(yTest, yPred);
         printPrecRecall(precScores)   
         return yPred     
+    
+def appendDataTofile(*text_str):    
+    with open("../files/result.txt", "a") as myfile:
+        for i in range(0,len(text_str)):
+            myfile.write(str(text_str[i]))    
+        myfile.write("\n")
         
 class DataModeller:
     
@@ -64,8 +73,8 @@ class DataModeller:
         print "Testing dimension ->  ",xTest.shape
         
         #xTrain,xTest = transform(xTrain,yTrain,xTest)
-        #print "Reduced Training dimension -> ",xTrain.shape
-        #print "Reduced Testing dimension ->  ",xTest.shape
+        print "Reduced Training dimension -> ",xTrain.shape
+        print "Reduced Testing dimension ->  ",xTest.shape
         
         #MultinomialNB classification
         print "MultiNB";
@@ -97,6 +106,10 @@ if __name__ == '__main__':
         sys.exit(1)
     training_file = sys.argv[1]
     test_file = sys.argv[2]
+    result_file = "../files/result.txt";
+    if os.path.exists(result_file):
+        os.remove(result_file);
+
     model = DataModeller(training_file, test_file)
     model.runAnalysis()
         
