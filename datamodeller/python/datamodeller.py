@@ -8,6 +8,7 @@ from sklearn import preprocessing as pp
 from sklearn import cross_validation as cv
 from sklearn.decomposition import SparsePCA
 from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.neighbors import KNeighborsClassifier
 
 
 def printPrecRecall(scores):
@@ -24,6 +25,17 @@ def transform(xTrain,yTrain,xTest):
     newXTest = pca.transform(xTest)
     return newXTrain,newXTest   
 
+def classify(func,xTrain,xTest,yTrain,yTest):        
+        clf = func()
+        clf.fit(xTrain, yTrain);
+        yPred = clf.predict(xTest); 
+        resultLR =  clf.score(xTest,yTest);
+        print "accuracy =" , resultLR.mean();             
+        print "Confusion matrix",confusion_matrix(yTest, yPred);        
+        precScores = precision_recall_fscore_support(yTest, yPred);
+        printPrecRecall(precScores)   
+        return yPred     
+        
 class DataModeller:
     
     def __init__(self, training_file, test_file):
@@ -52,31 +64,17 @@ class DataModeller:
         print "Testing dimension ->  ",xTest.shape
         
         #xTrain,xTest = transform(xTrain,yTrain,xTest)
-        
-        print "Reduced Training dimension -> ",xTrain.shape
-        print "Reduced Testing dimension ->  ",xTest.shape
+        #print "Reduced Training dimension -> ",xTrain.shape
+        #print "Reduced Testing dimension ->  ",xTest.shape
         
         #MultinomialNB classification
         print "MultiNB";
-        mutlinb = naive_bayes.MultinomialNB();
-        mutlinb.fit(xTrain,yTrain);
-        yPred = mutlinb.predict(xTest);
-        resultMNB =  mutlinb.score(xTest,yTest);        
-        print "MNB mean accuracy =" , resultMNB;     
-        print "Confusion matrix",confusion_matrix(yTest, yPred);        
-        precScores = precision_recall_fscore_support(yTest, yPred);
-        printPrecRecall(precScores)
-
+        yPred = classify(lambda:naive_bayes.MultinomialNB(),xTrain,xTest,yTrain,yTest)
+        
         #Logistic Regression classification
         print "Log regression";
-        logreg = linear_model.LogisticRegression(penalty="l1",C=0.5,intercept_scaling=2);
-        logreg.fit(xTrain,yTrain);
-        yPred = logreg.predict(xTest);                
-        resultLR =  logreg.score(xTest,yTest);        
-        print "Log Reg mean accuracy =" , resultLR.mean();             
-        print "Confusion matrix",confusion_matrix(yTest, yPred);        
-        precScores = precision_recall_fscore_support(yTest, yPred);
-        printPrecRecall(precScores)        
+        yPred = classify(lambda:linear_model.LogisticRegression(penalty="l1",C=0.5,intercept_scaling=2),
+                 xTrain,xTest,yTrain,yTest)
                                 
         outputFile = open("../files/classifiedtweets.csv", 'w+')
         rows = len(yPred)
@@ -84,21 +82,13 @@ class DataModeller:
         for i in range(0,rows):
             outputFile.write(str(yPred[i]) +","+ str(yTest[i])+"\n")
         outputFile.close()
-               
-        
-     
-        
+                       
         
         #SVM based classification
         print "SVM";
-        svmclf = svm.SVC(C=8.0,gamma=0.10,kernel='rbf',probability=True,shrinking=True);
-        svmclf.fit(xTrain,yTrain);
-        yPred = svmclf.predict(xTest);
-        resultSVM =  svmclf.score(xTest,yTest);        
-        print "SVM mean accuracy =" , resultSVM;     
-        print "Confusion matrix",confusion_matrix(yTest, yPred);   
-        precScores = precision_recall_fscore_support(yTest, yPred);
-        printPrecRecall(precScores)      
+        classify(lambda:svm.SVC(C=8.0,gamma=0.10,kernel='rbf',probability=True,shrinking=True),
+                 xTrain,xTest,yTrain,yTest)
+        
         
 if __name__ == '__main__':
     if len(sys.argv) < 2:
