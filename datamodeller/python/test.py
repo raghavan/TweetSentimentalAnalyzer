@@ -14,7 +14,7 @@ from sklearn.neighbors import NearestNeighbors
 from itertools import imap
 
 
-def test(func,xTrain,xTest,yTrain,yTest):
+def classify(func,xTrain,xTest,yTrain,yTest):
         clf = func()
         clf.fit(xTrain, yTrain);
         yPred = clf.predict(xTest); 
@@ -43,7 +43,7 @@ class test:
         print "Training dimension -> ",xTrain.shape
         print "Testing dimension ->  ",xTest.shape
 
-        test(lambda:naive_bayes.MultinomialNB(),xTrain,yTrain,xTest,yTest)
+        test(naive_bayes.MultinomialNB(),xTrain,yTrain,xTest,yTest)
     
 
     
