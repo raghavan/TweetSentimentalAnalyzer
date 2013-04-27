@@ -1,20 +1,21 @@
 import numpy as np
 import scipy
 import sys
-from sklearn import linear_model, svm, naive_bayes
-from scipy.io import arff
-import pylab as pl
-import pickle
-from sklearn.metrics import mean_squared_error, mean_absolute_error
-from sklearn.feature_selection import RFECV
-from sklearn.svm import SVR
-from sklearn.svm import NuSVR
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.neighbors import NearestNeighbors
-from itertools import imap
+from sklearn import linear_model,svm,naive_bayes,neighbors
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import precision_recall_fscore_support,classification_report
+from sklearn import preprocessing as pp
+from sklearn import cross_validation as cv
+from sklearn.decomposition import SparsePCA
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.neighbors import KNeighborsClassifier
 
 
 def classify(func,xTrain,xTest,yTrain,yTest):
+        
+        print "Training dimension -> ",xTrain.shape
+        print "Testing dimension ->  ",xTest.shape
+        
         clf = func()
         clf.fit(xTrain, yTrain);
         yPred = clf.predict(xTest); 
@@ -39,9 +40,7 @@ class test:
                   
         xTest = testData[:, :testData.shape[1] -1]
         yTest = testData[:, testData.shape[1]-1]
-    
-        print "Training dimension -> ",xTrain.shape
-        print "Testing dimension ->  ",xTest.shape
+
 
         classify(lambda:naive_bayes.MultinomialNB(),xTrain,xTest,yTrain,yTest)
     
