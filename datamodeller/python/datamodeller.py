@@ -40,16 +40,18 @@ def classify(func,xTrain,xTest,yTrain,yTest):
         return yPred     
     
 def appendDataTofile(*text_str):    
-    with open("../files/result.txt", "a") as myfile:
+    with open(DataModeller.result_file_static, "a") as myfile:
         for i in range(0,len(text_str)):
             myfile.write(str(text_str[i]))    
         myfile.write("\n")
         
 class DataModeller:
-    
-    def __init__(self, training_file, test_file):
+            
+    def __init__(self, training_file, test_file,result_file):
         self.training_file = training_file
         self.test_file = test_file
+        DataModeller.result_file_static = result_file
+        
         
     def runAnalysis(self):
         
@@ -100,17 +102,17 @@ class DataModeller:
         
         
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 4:
         print 'Please provide the training file and test file'
-        print 'python datamodeller.py <training-file-path> <test_file>'
+        print 'python datamodeller.py <training-file-path> <test_file> <result_file>'
         sys.exit(1)
     training_file = sys.argv[1]
     test_file = sys.argv[2]
-    result_file = "../files/result.txt";
+    result_file = sys.argv[3]    
     if os.path.exists(result_file):
         os.remove(result_file);
 
-    model = DataModeller(training_file, test_file)
+    model = DataModeller(training_file, test_file,result_file)
     model.runAnalysis()
         
         
