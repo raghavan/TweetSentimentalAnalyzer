@@ -41,7 +41,8 @@ def classify(func,xTrain,xTest,yTrain,yTest):
 def gridSearchCVforSVM(xTrain,xTest,yTrain,yTest):
      appendDataTofile("Grid search results")
      svc = svm.SVC()
-     clf = grid_search.GridSearchCV(svc)
+     parameters = {'kernel':('rbf'), 'C':[1, 10]}
+     clf = grid_search.GridSearchCV(svc,parameters)
      clf.fit(xTrain, xTest)
      yPred = clf.predict(xTest); 
      resultLR =  clf.score(xTest,yTest);  
@@ -97,14 +98,15 @@ class DataModeller:
         appendDataTofile("Log regression");
         yPred = classify(lambda:linear_model.LogisticRegression(penalty="l1",C=0.5,intercept_scaling=2),
                  xTrain,xTest,yTrain,yTest)
-                           
-        #Grid search SVM
-        #gridSearchCVforSVM(xTrain,xTest,yTrain,yTest)
-        
+                                  
         #SVM based classification
         appendDataTofile("SVM");
         yPred = classify(lambda:svm.SVC(C=8.0,gamma=0.10,kernel='rbf',probability=True,shrinking=True),
                  xTrain,xTest,yTrain,yTest)
+        
+        #Grid search SVM
+        gridSearchCVforSVM(xTrain,xTest,yTrain,yTest)
+ 
         
         outputFile = open("../files/classifiedtweets.csv", 'w+')
         rows = len(yPred)
