@@ -79,26 +79,26 @@ class DataModeller:
         print "Reduced Testing dimension ->  ",xTest.shape
         
         #MultinomialNB classification
-        print "MultiNB";
+        appendDataTofile("MultiNB");
         yPred = classify(lambda:naive_bayes.MultinomialNB(),xTrain,xTest,yTrain,yTest)
         
         #Logistic Regression classification
-        print "Log regression";
+        appendDataTofile("Log regression");
         yPred = classify(lambda:linear_model.LogisticRegression(penalty="l1",C=0.5,intercept_scaling=2),
                  xTrain,xTest,yTrain,yTest)
-                                
+                                                       
+        
+        #SVM based classification
+        appendDataTofile("SVM");
+        yPred = classify(lambda:svm.SVC(C=8.0,gamma=0.10,kernel='rbf',probability=True,shrinking=True),
+                 xTrain,xTest,yTrain,yTest)
+        
         outputFile = open("../files/classifiedtweets.csv", 'w+')
         rows = len(yPred)
         outputFile.write("Predicted,Actual\n");
         for i in range(0,rows):
             outputFile.write(str(yPred[i]) +","+ str(yTest[i])+"\n")
         outputFile.close()
-                       
-        
-        #SVM based classification
-        print "SVM";
-        classify(lambda:svm.SVC(C=8.0,gamma=0.10,kernel='rbf',probability=True,shrinking=True),
-                 xTrain,xTest,yTrain,yTest)
         
         
 if __name__ == '__main__':
