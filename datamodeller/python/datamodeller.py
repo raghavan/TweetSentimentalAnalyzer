@@ -10,6 +10,7 @@ from sklearn.decomposition import SparsePCA
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.neighbors import KNeighborsClassifier
 import os
+from sklearn import svm, grid_search
 
 
 def printPrecRecall(scores):
@@ -30,14 +31,26 @@ def classify(func,xTrain,xTest,yTrain,yTest):
         clf = func()
         clf.fit(xTrain, yTrain);
         yPred = clf.predict(xTest); 
-        resultLR =  clf.score(xTest,yTest);
-        print  "",func,"accuracy =" , resultLR.mean();  
-        appendDataTofile("accuracy =" , resultLR.mean());           
-        print "Confusion matrix",confusion_matrix(yTest, yPred);   
+        resultLR =  clf.score(xTest,yTest);  
+        appendDataTofile("accuracy =" , resultLR.mean());              
         appendDataTofile("Confusion matrix",confusion_matrix(yTest, yPred))             
         precScores = precision_recall_fscore_support(yTest, yPred);
         printPrecRecall(precScores)   
-        return yPred     
+        return yPred   
+    
+def gridSearchCVforSVM(xTrain,xTest,yTrain,yTest):
+     appendDataToFile("Grid search results")
+     svc = svm.SVC()
+     clf = grid_search.GridSearchCV(svc)
+     clf.fit(xTrain, xTest)
+     yPred = clf.predict(xTest); 
+     resultLR =  clf.score(xTest,yTest);  
+     appendDataTofile("accuracy =" , resultLR.mean());              
+     appendDataTofile("Confusion matrix",confusion_matrix(yTest, yPred))             
+     precScores = precision_recall_fscore_support(yTest, yPred);
+     printPrecRecall(precScores)   
+     return yPred   
+      
     
 def appendDataTofile(*text_str):    
     with open(DataModeller.result_file_static, "a") as myfile:
@@ -71,12 +84,10 @@ class DataModeller:
         xTrain = transformer.fit_transform(xTrain)        
         xTest = transformer.fit_transform(xTest)
 
-        print "Training dimension -> ",xTrain.shape
-        print "Testing dimension ->  ",xTest.shape
+        appendDataTofile("Training dimension -> ",xTrain.shape)
+        appendDataTofile("Testing dimension ->  ",xTest.shape)
         
         #xTrain,xTest = transform(xTrain,yTrain,xTest)
-        print "Reduced Training dimension -> ",xTrain.shape
-        print "Reduced Testing dimension ->  ",xTest.shape
         
         #MultinomialNB classification
         appendDataTofile("MultiNB");
@@ -86,7 +97,9 @@ class DataModeller:
         appendDataTofile("Log regression");
         yPred = classify(lambda:linear_model.LogisticRegression(penalty="l1",C=0.5,intercept_scaling=2),
                  xTrain,xTest,yTrain,yTest)
-                                                       
+                           
+        #Grid search SVM
+        gridSearchCVforSVM(xTrain,xTest,yTrain,yTest)
         
         #SVM based classification
         appendDataTofile("SVM");
