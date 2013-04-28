@@ -99,7 +99,7 @@ class DataModeller:
                  xTrain,xTest,yTrain,yTest)
                            
         #Grid search SVM
-        gridSearchCVforSVM(xTrain,xTest,yTrain,yTest)
+        #gridSearchCVforSVM(xTrain,xTest,yTrain,yTest)
         
         #SVM based classification
         appendDataTofile("SVM");
