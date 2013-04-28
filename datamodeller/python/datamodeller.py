@@ -44,13 +44,9 @@ def gridSearchCVforSVM(xTrain,xTest,yTrain,yTest):
      parameters = {'kernel':('linear','rbf'), 'C':[1, 10]}
      clf = grid_search.GridSearchCV(svc,parameters)
      clf.fit(xTrain, xTest)
-     yPred = clf.predict(xTest); 
      resultLR =  clf.score(xTest,yTest);  
      appendDataTofile("accuracy =" , resultLR.mean());              
-     appendDataTofile("Confusion matrix",confusion_matrix(yTest, yPred))             
-     precScores = precision_recall_fscore_support(yTest, yPred);
-     printPrecRecall(precScores)   
-     return yPred   
+     return resultLR   
       
     
 def appendDataTofile(*text_str):    
