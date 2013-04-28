@@ -41,7 +41,7 @@ def classify(func,xTrain,xTest,yTrain,yTest):
 def gridSearchCVforSVM(xTrain,xTest,yTrain,yTest):
      appendDataTofile("Grid search results")
      svc = svm.SVC()
-     parameters = {'kernel':('rbf'), 'C':[1, 10]}
+     parameters = {'kernel':('linear','rbf'), 'C':[1, 10]}
      clf = grid_search.GridSearchCV(svc,parameters)
      clf.fit(xTrain, xTest)
      yPred = clf.predict(xTest); 
