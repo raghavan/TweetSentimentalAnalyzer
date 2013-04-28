@@ -43,7 +43,7 @@ def gridSearchCVforSVM(xTrain,xTest,yTrain,yTest):
      svc = svm.SVC()
      parameters = {'kernel':('linear','rbf'), 'C':[1, 10]}
      clf = grid_search.GridSearchCV(svc,parameters)
-     clf.fit(xTrain, xTest)
+     clf.fit(xTrain, yTrain)
      resultLR =  clf.score(xTest,yTest);  
      appendDataTofile("accuracy =" , resultLR.mean());              
      return resultLR   
